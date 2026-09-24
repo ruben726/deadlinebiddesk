@@ -190,6 +190,8 @@ thead th { background: var(--paper-alt); }
 
 td.num, th.num { text-align: right; white-space: nowrap; }
 
+td .sub { color: var(--ink-soft); font-size: 0.85rem; }
+
 /* ---------- checklist (map pages) ---------- */
 
 .checklist { list-style: none; padding-left: 0; }
