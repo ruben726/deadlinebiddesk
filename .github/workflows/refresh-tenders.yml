@@ -1,0 +1,62 @@
+name: Refresh SA tenders
+
+# Rebuilds /tenders from the public eTenders OCDS API once a day and commits the
+# result. No secrets: the API is unauthenticated, the push uses the built-in
+# GITHUB_TOKEN, and IndexNow needs only the public key file at the site root.
+
+on:
+  schedule:
+    - cron: "7 4 * * *"      # 04:07 UTC daily (06:07 SAST); off the :00 rush
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-tenders
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build tender pages
+        id: build
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          echo "today=$TODAY" >> "$GITHUB_OUTPUT"
+          python build_site.py --today "$TODAY" --no-ping \
+            --changed-out "$RUNNER_TEMP/changed-urls.txt"
+
+      - name: Commit and push if changed
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A tenders sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "No changes."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -q -m "Daily tender refresh ${{ steps.build.outputs.today }}"
+            git pull --rebase -q origin "${GITHUB_REF_NAME}"
+            git push -q origin "HEAD:${GITHUB_REF_NAME}"
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ping IndexNow (after Pages has had time to deploy)
+        if: steps.commit.outputs.pushed == 'true'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          sleep 180
+          python build_site.py --ping-file "$RUNNER_TEMP/changed-urls.txt"

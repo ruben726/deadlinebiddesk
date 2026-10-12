@@ -5,3 +5,5 @@ Allow: /
 # here. Each one carries <meta name="robots" content="noindex,nofollow">, and a
 # crawler has to be able to fetch the page to see that instruction. Blocking
 # the directory in robots.txt would prevent the noindex from ever being read.
+
+Sitemap: https://deadlinebiddesk.com/sitemap.xml

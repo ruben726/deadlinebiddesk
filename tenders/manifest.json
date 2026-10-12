@@ -1,0 +1,23 @@
+{
+ "built_for": "2026-10-12",
+ "categories": {
+  "Goods": 323,
+  "Services": 1014,
+  "Works": 347
+ },
+ "closing_this_week": 705,
+ "fresh_open": 2253,
+ "open_tenders": 2253,
+ "provinces": {
+  "Eastern Cape": 77,
+  "Free State": 22,
+  "Gauteng": 84,
+  "KwaZulu-Natal": 76,
+  "Limpopo": 55,
+  "Mpumalanga": 2,
+  "North West": 28,
+  "Northern Cape": 8,
+  "Western Cape": 71
+ },
+ "tender_pages": 2253
+}
