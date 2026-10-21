@@ -1254,10 +1254,6 @@ def main(argv=None) -> int:
     if fresh_open < MIN_OPEN_TENDERS:
         log(f"ABORT: only {fresh_open} open tenders (< {MIN_OPEN_TENDERS}). Existing pages left untouched.")
         return 3
-    prev_fresh = int(manifest.get("fresh_open") or manifest.get("open_tenders") or 0)
-    if prev_fresh and fresh_open < MIN_OPEN_RATIO * prev_fresh:
-        log(f"ABORT: open tenders fell from {prev_fresh} to {fresh_open}. Existing pages left untouched.")
-        return 4
     got_total = sum(s["releases"] for s in day_stats.values())
     lost_total = sum(s["lost"] for s in day_stats.values())
     if got_total + lost_total and lost_total > MAX_LOST_RATIO * (got_total + lost_total):
@@ -1279,6 +1275,14 @@ def main(argv=None) -> int:
             carried += 1
     if carried:
         log(f"[build_site] carried over {carried} still-open tenders from the previous run")
+
+    # Collapse guard on the TOTAL after carry-over. Daily runs fetch a short
+    # window and carry older open tenders forward from the published pages, so
+    # comparing a 14-day fetch against a 60-day total would always trip.
+    prev_total = int(manifest.get("open_tenders") or 0)
+    if prev_total and len(open_now) < MIN_OPEN_RATIO * prev_total:
+        log(f"ABORT: open tenders fell from {prev_total} to {len(open_now)}. Existing pages left untouched.")
+        return 4
 
     # ---- 4. render in memory
     files = build(open_now, today, {"fresh_open": fresh_open})

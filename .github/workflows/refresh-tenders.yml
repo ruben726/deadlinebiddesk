@@ -34,7 +34,14 @@ jobs:
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           echo "today=$TODAY" >> "$GITHUB_OUTPUT"
+          # Daily: fetch 14 days and carry older open tenders forward from the
+          # published pages (a 60-day fetch takes ~70 min because eTenders
+          # returns 500 on about a third of requests). Sunday: deeper 45-day
+          # sweep to pick up amendments to older tenders.
+          if [ "$(date -u +%u)" = "7" ]; then BACK=45; MINS=85; else BACK=14; MINS=40; fi
+          echo "window: $BACK days, budget $MINS min"
           python build_site.py --today "$TODAY" --no-ping \
+            --back-days "$BACK" --max-minutes "$MINS" \
             --changed-out "$RUNNER_TEMP/changed-urls.txt"
 
       - name: Commit and push if changed
