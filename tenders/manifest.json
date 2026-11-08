@@ -1,13 +1,13 @@
 {
- "built_for": "2026-11-07",
+ "built_for": "2026-11-08",
  "categories": {
-  "Goods": 261,
-  "Services": 1028,
-  "Works": 331
+  "Goods": 263,
+  "Services": 1035,
+  "Works": 340
  },
- "closing_this_week": 761,
- "fresh_open": 1098,
- "open_tenders": 2069,
+ "closing_this_week": 742,
+ "fresh_open": 2017,
+ "open_tenders": 2097,
  "provinces": {
   "Eastern Cape": 59,
   "Free State": 13,
@@ -19,5 +19,5 @@
   "Northern Cape": 7,
   "Western Cape": 69
  },
- "tender_pages": 2069
+ "tender_pages": 2097
 }
