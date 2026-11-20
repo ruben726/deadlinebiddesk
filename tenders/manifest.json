@@ -1,23 +1,23 @@
 {
- "built_for": "2026-11-19",
+ "built_for": "2026-11-20",
  "categories": {
-  "Goods": 289,
-  "Services": 1058,
-  "Works": 342
+  "Goods": 303,
+  "Services": 1099,
+  "Works": 360
  },
- "closing_this_week": 740,
- "fresh_open": 1334,
- "open_tenders": 2238,
+ "closing_this_week": 783,
+ "fresh_open": 1413,
+ "open_tenders": 2327,
  "provinces": {
-  "Eastern Cape": 44,
-  "Free State": 19,
-  "Gauteng": 58,
-  "KwaZulu-Natal": 60,
-  "Limpopo": 29,
+  "Eastern Cape": 48,
+  "Free State": 26,
+  "Gauteng": 61,
+  "KwaZulu-Natal": 62,
+  "Limpopo": 31,
   "Mpumalanga": 22,
-  "North West": 18,
+  "North West": 19,
   "Northern Cape": 6,
-  "Western Cape": 72
+  "Western Cape": 76
  },
- "tender_pages": 2238
+ "tender_pages": 2327
 }
